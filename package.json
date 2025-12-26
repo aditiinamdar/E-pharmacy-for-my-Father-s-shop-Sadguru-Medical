@@ -1,0 +1,11 @@
+{
+  "name": "epharmacy-root",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "npm --prefix client run dev",
+    "start": "npm --prefix client start",
+    "install": "npm --prefix client install",
+    "build": "npm --prefix client run build"
+  }
+}
