@@ -16,48 +16,52 @@ import addressRoutes from "./routes/address.routes.js";
 import { connectCloudinary } from "./config/cloudinary.js";
 import chatbotRoutes from "./routes/chatbot.routes.js";
 
-
-
-
 const app = express();
 
 // 1. Connect to Database
 connectDB();
 connectCloudinary();
-// Update this section in your index.js
+
+// 2. Middlewares
+// UPDATED: Added your Render frontend URL to allowedOrigins
 const allowedOrigins = [
-    "http://localhost:5173", 
-    "https://sadguru-medical-pharmacy.onrender.com/" // <--- Add your Render frontend URL here
+    "http://localhost:5173",
+    "https://sadguru-medical-pharmacy.onrender.com" 
 ];
 
 app.use(cors({ 
-    origin: (origin, callback) => {
-        // Allow requests with no origin (like mobile apps or curl requests)
+    origin: function (origin, callback) {
+        // allow requests with no origin (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
         if (allowedOrigins.indexOf(origin) === -1) {
-            return callback(new Error("CORS policy blocked this origin"), false);
+            return callback(new Error('The CORS policy for this site does not allow access from the specified Origin.'), false);
         }
         return callback(null, true);
-    }, 
+    },
     credentials: true 
 }));
 
-
-app.use(express.json()); // Fixes the undefined req.body
+app.use(express.json()); 
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// 3. Routes (Now they can access the parsed req.body)
+// 3. Routes
+// ADDED: Root route so the base URL doesn't show "Cannot GET /"
+app.get("/", (req, res) => {
+    res.status(200).json({
+        message: "Sadguru Medical API is running successfully!",
+        status: "Healthy"
+    });
+});
+
 app.use("/images", express.static("uploads"));
 app.use("/api/user", userRoutes);
-app.use("/api/seller",sellerRoutes);
-app.use("/api/product",productRoutes);
-app.use("/api/cart",cartRoutes);
-app.use("/api/order",orderRoutes);
-app.use("/api/address",addressRoutes);
+app.use("/api/seller", sellerRoutes);
+app.use("/api/product", productRoutes);
+app.use("/api/cart", cartRoutes);
+app.use("/api/order", orderRoutes);
+app.use("/api/address", addressRoutes);
 app.use("/api/chatbot", chatbotRoutes);
-
-
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
