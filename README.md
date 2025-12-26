@@ -1,4 +1,4 @@
-Sadguru Medical & Pharmacy + AI Assistant
+e-Pharmacy Sadguru Medical  + AI Assistant
 
 A modern, full-stack pharmacy management system integrated with an AI-powered Health Assistant built on the Gemini 2.5 Flash model.
 
