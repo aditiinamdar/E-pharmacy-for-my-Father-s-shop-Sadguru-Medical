@@ -42,7 +42,23 @@ app.use("/api/order",orderRoutes);
 app.use("/api/address",addressRoutes);
 app.use("/api/chatbot", chatbotRoutes);
 
+// Update this section in your index.js
+const allowedOrigins = [
+    "http://localhost:5173", 
+    "https://sadguru-medical-pharmacy.onrender.com/" // <--- Add your Render frontend URL here
+];
 
+app.use(cors({ 
+    origin: (origin, callback) => {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) === -1) {
+            return callback(new Error("CORS policy blocked this origin"), false);
+        }
+        return callback(null, true);
+    }, 
+    credentials: true 
+}));
 
 
 const PORT = process.env.PORT || 5000;
