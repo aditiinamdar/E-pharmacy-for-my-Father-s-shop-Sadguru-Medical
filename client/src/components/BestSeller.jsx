@@ -5,12 +5,13 @@ import ProductCard from "./ProductCard";
 const BestSeller = () => {
   const { products } = useContext(AppContext);
 
+  // Filtering for best sellers (example logic: inStock items)
   const bestSellers = products
     .filter((product) => product.inStock)
     .slice(0, 5);
 
   return (
-    <section className="mt-20">
+    <section className="mt-20 px-4 md:px-0">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
@@ -27,16 +28,28 @@ const BestSeller = () => {
         </span>
       </div>
 
-      {/* Products */}
+      {/* Products Grid */}
       {bestSellers.length ? (
-        <div
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5
-          gap-5"
-        >
-          {bestSellers.map((product) => (
-            <ProductCard key={product._id} product={product} />
-          ))}
-        </div>
+        <>
+          <div
+            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5
+            gap-5"
+          >
+            {bestSellers.map((product) => (
+              <ProductCard key={product._id} product={product} />
+            ))}
+          </div>
+
+          {/* Mobile View All Button (Visible only on mobile) */}
+          <div className="mt-8 sm:hidden">
+            <button 
+              className="w-full py-3 border border-gray-300 rounded-lg text-gray-700 font-medium active:bg-gray-50 transition-colors"
+              onClick={() => window.location.href = '/shop'} // Adjust route as needed
+            >
+              View All Best Sellers
+            </button>
+          </div>
+        </>
       ) : (
         <div className="text-center py-10 text-gray-500">
           No best sellers available right now.
